@@ -13,8 +13,7 @@ public class Subscriber {
     }
 
     public void subscribe(Topic topic) {
-        for (Object obj : topic.getPartitions()) {
-            Partition partition = (Partition) obj;
+        for (Partition partition : topic.getPartitions()) {
             partition.registerSubscriber(this);
             new Thread(() -> consumeMessages(partition)).start();
         }
@@ -28,7 +27,7 @@ public class Subscriber {
             }
         }
     }
-
+    
     private void processMessage(Message message) {
         System.out.println("Timestamp:" + System.currentTimeMillis() +
                 " Subscriber " + name + " consumed message: " + message.getContent());
